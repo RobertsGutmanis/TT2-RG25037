@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
+ini_set('default_charset', 'UTF-8');
+mb_internal_encoding('UTF-8');
 define('LARAVEL_START', microtime(true));
 
 // Determine if the application is in maintenance mode...

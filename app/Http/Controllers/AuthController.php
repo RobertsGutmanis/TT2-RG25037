@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\AuditLog;
 
 class AuthController extends Controller
 {
@@ -48,6 +49,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        AuditLog::log('register', ['email' => $request->email]);
         return redirect()->route('products.index');
     }
 
@@ -60,10 +62,11 @@ class AuthController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $request->session()->regenerate();
+            AuditLog::log('login_success', ['email' => $request->email]);
             return redirect()->route('products.index');
         }
-
-        return back()->withErrors(['email' => 'Nepareizs e-pasts vai parole.']);
+        AuditLog::log('login_failed', ['email' => $request->email]);
+        return back()->withErrors(['email' => 'Incorrect e-mail or password.']);
     }
 
     public function logout(Request $request)
@@ -71,6 +74,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+         AuditLog::log('logout', $request->only(['name', 'last_name', 'country', 'city']));
         return redirect()->route('login');
     }
 }

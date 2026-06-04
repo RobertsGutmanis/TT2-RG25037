@@ -14,6 +14,7 @@
             <a href="./grozs.html" class="go-to-cart">To cart!</a>
         </div>
     </div>
+    <div id="google_translate_element"></div>
     <nav>
         <ul id="nav-list">
             <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>

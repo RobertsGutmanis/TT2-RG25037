@@ -16,7 +16,7 @@
             </div>
             <div>
                 <label for="search-input" id="search-label">Search: </label>
-                <input type="text" name="search-nosaukums" placeholder="Name" id="search-input" value="{{ request('search-nosaukums') }}">
+                <input type="text" name="nosaukums" placeholder="Name" id="search-input" value="{{ request('nosaukums') }}">
                 <button type="submit">Search</button>
             </div>
         </form>

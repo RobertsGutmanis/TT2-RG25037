@@ -40,7 +40,7 @@
       <button type="submit" class="auth-btn">Register →</button>
     </form>
 
-    <p class="auth-link">Already registered? <a href="{{ route('auth.login') }}">Login</a></p>
+    <p class="auth-link">Already registered? <a href="{{ route('login') }}">Login</a></p>
   </div>
 </div>
 
