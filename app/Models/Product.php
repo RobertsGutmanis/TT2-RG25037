@@ -16,6 +16,7 @@ class Product extends Model
         'image_url',
         'category_id',
     ];
+    public $timestamps = false;
 
     protected $casts = [
         'price'        => 'double',
@@ -27,5 +28,9 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+    public function specifications()
+    {
+        return $this->hasMany(\App\Models\ProductSpecification::class);
     }
 }

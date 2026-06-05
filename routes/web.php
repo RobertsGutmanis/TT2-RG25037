@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController; 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +22,12 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin-panel', [AdminController::class, 'index'])->name('admin.index');
+    Route::post('/admin-panel/products', [AdminController::class, 'store'])->name('admin.store');
+    Route::delete('/admin-panel/products/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin-panel/products/{id}/specs', [AdminController::class, 'editSpecs'])->name('admin.specs');
+    Route::post('/admin-panel/products/{id}/specs', [AdminController::class, 'updateSpecs'])->name('admin.specs.update');
+});

@@ -9,8 +9,9 @@
             <p class="acc-role">{{ ucfirst($user->getRoleNames()->first() ?? 'lietotājs') }}</p>
         </div>
          <form method="POST" action="{{ route('auth.logout') }}">
+            <a href="{{ route("admin.index") }}" class="save-btn a-btn">Admin panel</a>
             @csrf
-            <button type="submit" class="save-btn" class="logout-btn">Log out</button>
+            <button type="submit" class="save-btn">Log out</button>
         </form>
     </div>
 
