@@ -33,13 +33,14 @@
                     <div class="product-detail-actions">
                         <form method="POST" action="{{ route('cart.add', $product->id) }}">
                             @csrf
-                            <button type="submit" class="product-detail-cart-btn">Add to cart</button>
+                            <button type="submit" class="product-detail-cart-btn" data-alert="Added to cart!">Add to cart</button>
                         </form>
 
                         @auth
                             <form method="POST" action="{{ route('wishlist.toggle', $product->id) }}">
                                 @csrf
-                                <button type="submit" class="wishlist-btn {{ $isWishlisted ? 'wishlisted' : '' }}">
+                                <button type="submit" class="wishlist-btn {{ $isWishlisted ? 'wishlisted' : '' }}"
+                                    data-alert="{{ $isWishlisted ? 'Removed from wishlist!' : 'Added to wishlist!' }}">
                                     {{ $isWishlisted ? 'Wishlisted' : 'Add to wishlist' }}
                                 </button>
                             </form>

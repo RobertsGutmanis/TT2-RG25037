@@ -260,7 +260,7 @@ nav {
 }
 
 #landing-products {
-  padding: 50px 20px 80px;
+  padding: 50px 20px 100px;
 }
 
 .landing-section-header {
@@ -307,6 +307,7 @@ nav {
 
 .title {
   margin: 10px 0;
+  text-align: center;
 }
 
 /* Products */
@@ -438,10 +439,14 @@ nav {
 
 #products-topbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+#products-topbar .title {
+  width: 100%;
+  text-align: center;
 }
 
 #products-topbar-controls {
@@ -904,13 +909,52 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 0 6px;
 }
 
-.order-row:last-child {
+.order-items {
+  padding: 6px 0 14px 0;
+  margin-bottom: 2px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.order-items:last-child {
   border-bottom: none;
   padding-bottom: 0;
+}
+
+.order-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.order-item-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.order-item-name {
+  flex: 1;
+  color: #333;
+}
+
+.order-item-qty {
+  color: #888;
+  white-space: nowrap;
+}
+
+.order-item-price {
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .order-id {
@@ -979,6 +1023,15 @@ footer {
 .success-msg {
   background: #e8f5e9;
   color: #2e7d32;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+}
+
+.error-msg {
+  background: #fff5f5;
+  color: #b91c1c;
   padding: 10px 14px;
   border-radius: 6px;
   font-size: 13px;
@@ -1060,6 +1113,17 @@ tr:last-child td {
 .panel-title {
   font-size: 20px;
   font-weight: 500;
+}
+
+.admin-status-select {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
 }
 
 /* Authentication */

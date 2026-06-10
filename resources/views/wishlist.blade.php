@@ -35,7 +35,7 @@
                     <div class="wishlist-card-footer">
                         <form method="POST" action="{{ route('cart.add', $product->id) }}">
                             @csrf
-                            <button type="submit" class="product-button">Add to cart</button>
+                            <button type="submit" class="product-button" data-alert="Added to cart!">Add to cart</button>
                         </form>
                         <form method="POST" action="{{ route('wishlist.toggle', $product->id) }}">
                             @csrf

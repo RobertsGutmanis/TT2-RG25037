@@ -7,6 +7,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     $featured = \App\Models\Product::with('category')->latest('id')->take(4)->get();
@@ -23,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/account', [AccountController::class, 'update'])->name('account.update');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
@@ -42,4 +44,5 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin-panel/products/{id}', [AdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/admin-panel/products/{id}/specs', [AdminController::class, 'editSpecs'])->name('admin.specs');
     Route::post('/admin-panel/products/{id}/specs', [AdminController::class, 'updateSpecs'])->name('admin.specs.update');
+    Route::post('/admin-panel/orders/{id}/status', [AdminController::class, 'updateOrderStatus'])->name('admin.order.status');
 });

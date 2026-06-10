@@ -114,12 +114,12 @@
                     </div>
 
                     <div class="filter-section">
-                        <p class="filter-section-label">Deals</p>
+                        <p class="filter-section-label">Others</p>
                         <label class="filter-checkbox-label">
                             <input type="checkbox" name="on_sale" value="1"
                                 {{ request('on_sale') ? 'checked' : '' }}
                                 onchange="this.form.submit()">
-                            On sale only
+                            On sale
                         </label>
                     </div>
 

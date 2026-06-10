@@ -18,11 +18,11 @@
       <div class="field-row">
         <div class="field">
           <label for="name">Name</label>
-          <input type="text" name="name" id="name" placeholder="Jānis" value="{{ old('name') }}">
+          <input type="text" name="name" id="name" placeholder="John" value="{{ old('name') }}">
         </div>
         <div class="field">
           <label for="last_name">Last name</label>
-          <input type="text" name="last_name" id="last_name" placeholder="Bērziņš" value="{{ old('last_name') }}">
+          <input type="text" name="last_name" id="last_name" placeholder="Doe" value="{{ old('last_name') }}">
         </div>
       </div>
       <div class="field">

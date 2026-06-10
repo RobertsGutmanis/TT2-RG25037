@@ -48,7 +48,14 @@
                             <span>Total</span>
                             <span>{{ number_format($total, 2) }}€</span>
                         </div>
-                        <button class="cart-checkout-btn">Proceed to checkout</button>
+                        @auth
+                            <form method="POST" action="{{ route('checkout.store') }}">
+                                @csrf
+                                <button type="submit" class="cart-checkout-btn">Proceed to checkout</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="cart-checkout-btn" style="display:block;text-align:center;text-decoration:none;">Log in to checkout</a>
+                        @endauth
                         <form method="POST" action="{{ route('cart.clear') }}" style="margin-top: 10px;">
                             @csrf
                             <button type="submit" class="cart-clear-btn">Clear cart</button>

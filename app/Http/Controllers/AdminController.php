@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\ProductSpecification;
@@ -15,8 +16,20 @@ class AdminController extends Controller
 
         $products   = Product::with(['category', 'specifications'])->get();
         $categories = Category::all();
+        $orders     = Order::with(['user.userData', 'items'])->orderByDesc('id')->get();
 
-        return view('admin', compact('products', 'categories'));
+        return view('admin', compact('products', 'categories', 'orders'));
+    }
+
+    public function updateOrderStatus(Request $request, $id)
+    {
+        if (!auth()->user()->hasRole('admin')) abort(403);
+
+        $request->validate(['status' => 'required|in:pending,processing,delivered,cancelled']);
+
+        Order::findOrFail($id)->update(['status' => $request->status]);
+
+        return redirect()->route('admin.index')->with('success', 'Order status updated.');
     }
 
     public function store(Request $request)
@@ -46,7 +59,7 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->route('admin.index')->with('success', 'Produkts pievienots!');
+        return redirect()->route('admin.index')->with('success', 'Product added!');
     }
 
     public function destroy($id)
@@ -54,7 +67,7 @@ class AdminController extends Controller
         if (!auth()->user()->hasRole('admin')) abort(403);
 
         Product::findOrFail($id)->delete();
-        return redirect()->route('admin.index')->with('success', 'Produkts dzēsts!');
+        return redirect()->route('admin.index')->with('success', 'Product deleted!');
     }
 
     public function editSpecs($id)

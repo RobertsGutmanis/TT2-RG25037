@@ -2,10 +2,10 @@
 
 <section id="hero">
     <div id="hero-content">
-        <h1 id="hero-headline">Quality products, great prices.</h1>
-        <p id="hero-sub">Browse our catalogue, save items to your wishlist, and check out in minutes.</p>
+        <h1 id="hero-headline">Lorem ipsum dolor sit amet.</h1>
+        <p id="hero-sub">consectetur adipiscing elit. Donec orci neque, tincidunt et dui quis, convallis facilisis lectus. Nam mi mauris,</p>
         <div id="hero-actions">
-            <a href="{{ route('products.index') }}" class="hero-btn hero-btn-primary">Browse products</a>
+            <a href="{{ route('products.index') }}" class="hero-btn hero-btn-primary">All products</a>
             @guest
                 <a href="{{ route('auth.register') }}" class="hero-btn hero-btn-outline">Create account</a>
             @endguest

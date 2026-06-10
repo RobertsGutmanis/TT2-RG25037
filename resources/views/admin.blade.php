@@ -9,6 +9,58 @@
         <p class="success-msg">{{ session('success') }}</p>
     @endif
 
+    {{-- ORDERS --}}
+    <div class="card">
+        <p class="section-label">All Orders</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($orders as $order)
+                <tr>
+                    <td style="font-weight:500;font-size:13px;">#{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</td>
+                    <td style="font-size:13px;color:#888;">{{ $order->created_at->format('d M Y') }}</td>
+                    <td style="font-size:13px;">
+                        @if($order->user && $order->user->userData)
+                            {{ $order->user->userData->name }} {{ $order->user->userData->last_name }}
+                            <br><span style="color:#aaa;font-size:11px;">{{ $order->user->email }}</span>
+                        @else
+                            <span style="color:#aaa;">Unknown</span>
+                        @endif
+                    </td>
+                    <td style="font-size:12px;color:#555;">
+                        @foreach($order->items as $item)
+                            <div>{{ $item->product->name ?? 'Removed' }} x{{ $item->quantity }}</div>
+                        @endforeach
+                    </td>
+                    <td style="font-weight:500;font-size:13px;">€{{ number_format($order->total, 2) }}</td>
+                    <td>
+                        <form method="POST" action="{{ route('admin.order.status', $order->id) }}" style="display:flex;gap:6px;align-items:center;">
+                            @csrf
+                            <select name="status" class="admin-status-select">
+                                @foreach(['pending','processing','delivered','cancelled'] as $s)
+                                    <option value="{{ $s }}" @selected($order->status === $s)>{{ ucfirst($s) }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn btn-primary" style="padding:4px 10px;font-size:12px;">Save</button>
+                        </form>
+                    </td>
+                </tr>
+                @empty
+                <tr><td colspan="6" style="text-align:center;color:#aaa;font-size:13px;padding:16px;">No orders yet.</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
     {{-- PRODUCT LIST --}}
     <div class="card">
         <p class="section-label">Products</p>
