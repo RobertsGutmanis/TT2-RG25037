@@ -37,7 +37,7 @@
         <label for="password_confirmation">Confirm Password</label>
         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" >
       </div>
-      <button type="submit" class="auth-btn">Register →</button>
+      <button type="submit" class="auth-btn">Register</button>
     </form>
 
     <p class="auth-link">Already registered? <a href="{{ route('login') }}">Login</a></p>

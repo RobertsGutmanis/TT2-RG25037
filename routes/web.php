@@ -5,9 +5,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', function () {
-    return view('welcome');
+    $featured = \App\Models\Product::with('category')->latest('id')->take(4)->get();
+    return view('welcome', compact('featured'));
 })->name("home");
 
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
@@ -18,10 +21,19 @@ Route::post('/register', [AuthController::class, 'register'])->name('auth.regist
 Route::middleware('auth')->group(function () {
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
     Route::post('/account', [AccountController::class, 'update'])->name('account.update');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
 
 Route::middleware('auth')->group(function () {

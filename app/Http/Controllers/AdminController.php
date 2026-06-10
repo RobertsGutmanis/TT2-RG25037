@@ -70,7 +70,23 @@ class AdminController extends Controller
     {
         if (!auth()->user()->hasRole('admin')) abort(403);
 
+        $request->validate([
+            'name'         => 'required|string|max:32',
+            'manufacturer' => 'required|string|max:64',
+            'description'  => 'required|string|max:32',
+            'price'        => 'required|numeric',
+            'last_price'   => 'required|numeric',
+            'image_url'    => 'required|string',
+            'category_id'  => 'required|exists:categories,id',
+        ]);
+
         $product = Product::findOrFail($id);
+
+        $product->update($request->only([
+            'name', 'manufacturer', 'description',
+            'price', 'last_price', 'image_url', 'category_id'
+        ]));
+
         $product->specifications()->delete();
 
         if ($request->has('specs')) {
@@ -81,6 +97,6 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->route('admin.index')->with('success', 'Specifikācijas atjaunotas!');
+        return redirect()->route('admin.index')->with('success', 'Product updated!');
     }
 }

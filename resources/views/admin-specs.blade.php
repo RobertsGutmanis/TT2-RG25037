@@ -1,38 +1,61 @@
 @include('header')
 
-<style>
-  .card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 1.25rem; }
-  .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 12px; }
-  .spec-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
-  .spec-row input { flex: 1; height: 36px; padding: 0 10px; border: 1px solid #ddd; border-radius: 6px; background: #fafafa; font-size: 13px; outline: none; font-family: 'Poppins', sans-serif; }
-  .spec-row input:focus { border-color: #4CAF50; }
-  .btn { display: inline-flex; align-items: center; gap: 5px; height: 32px; padding: 0 12px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid #ddd; background: #fff; color: #333; }
-  .btn-danger { background: #fff5f5; color: #e53935; border-color: #fca5a5; }
-  .btn-primary { background: #4CAF50; color: #fff; border-color: #4CAF50; }
-  .back-link { font-size: 13px; color: #4CAF50; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
-</style>
-
 <div id="main">
-    <a href="{{ route('admin.index') }}" class="back-link">← Atpakaļ uz admin paneli</a>
-    <h1 style="font-size:18px;font-weight:500;margin-bottom:1.5rem;">Specifikācijas — {{ $product->name }}</h1>
+    <a href="{{ route('admin.index') }}" class="back-link">Back to admin panel</a>
+    <h1 style="font-size:18px;font-weight:500;margin-bottom:1.5rem;">Edit Product — {{ $product->name }}</h1>
 
     <div class="card">
-        <p class="section-label">Rediģēt specifikācijas</p>
+        <p class="section-label">Product Details</p>
         <form method="POST" action="{{ route('admin.specs.update', $product->id) }}">
             @csrf
+            <div class="form-grid">
+                <div class="field">
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{ $product->name }}" required maxlength="32">
+                </div>
+                <div class="field">
+                    <label>Manufacturer</label>
+                    <input type="text" name="manufacturer" value="{{ $product->manufacturer }}" required maxlength="64">
+                </div>
+                <div class="field">
+                    <label>Price</label>
+                    <input type="number" name="price" value="{{ $product->price }}" step="0.01" required>
+                </div>
+                <div class="field">
+                    <label>Previous Price</label>
+                    <input type="number" name="last_price" value="{{ $product->last_price }}" step="0.01" required>
+                </div>
+                <div class="field">
+                    <label>Category</label>
+                    <select name="category_id" required>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->category }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Image URL</label>
+                    <input type="text" name="image_url" value="{{ $product->image_url }}" required>
+                </div>
+            </div>
+            <div class="field" style="margin-bottom:12px;">
+                <label>Description</label>
+                <textarea name="description" required maxlength="32">{{ $product->description }}</textarea>
+            </div>
+
+            <p class="section-label">Specifications</p>
             <div id="specs-container">
                 @foreach($product->specifications as $i => $spec)
                 <div class="spec-row">
-                    <input type="text" name="specs[{{ $i }}][key]" value="{{ $spec->key }}" placeholder="Atslēga">
-                    <span style="color:#aaa;font-size:13px;">→</span>
-                    <input type="text" name="specs[{{ $i }}][value]" value="{{ $spec->value }}" placeholder="Vērtība">
+                    <input type="text" name="specs[{{ $i }}][key]" value="{{ $spec->key }}" placeholder="Key">
+                    <input type="text" name="specs[{{ $i }}][value]" value="{{ $spec->value }}" placeholder="Value">
                     <button type="button" class="btn btn-danger" onclick="removeSpec(this)">✕</button>
                 </div>
                 @endforeach
             </div>
-            <button type="button" class="btn" style="margin-bottom:1rem;" onclick="addSpec()">+ Pievienot spec</button>
+            <button type="button" class="btn" style="margin-bottom:1rem;" onclick="addSpec()">+ Add specification</button>
             <br>
-            <button type="submit" class="btn btn-primary">Saglabāt</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>
@@ -44,9 +67,8 @@ function addSpec() {
     const row = document.createElement('div');
     row.className = 'spec-row';
     row.innerHTML = `
-        <input type="text" name="specs[${specIndex}][key]" placeholder="Atslēga">
-        <span style="color:#aaa;font-size:13px;">→</span>
-        <input type="text" name="specs[${specIndex}][value]" placeholder="Vērtība">
+        <input type="text" name="specs[${specIndex}][key]" placeholder="Key">
+        <input type="text" name="specs[${specIndex}][value]" placeholder="Value">
         <button type="button" class="btn btn-danger" onclick="removeSpec(this)">✕</button>
     `;
     container.appendChild(row);

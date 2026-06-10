@@ -21,7 +21,7 @@
             <label for="password">Password</label>
             <input type="password" name="password" id="password" placeholder="••••••••" >
         </div>
-        <button type="submit" class="auth-btn">Login →</button>
+        <button type="submit" class="auth-btn">Login</button>
         </form>
 
         <p class="auth-link">Don't have an account? <a href="{{ route('auth.register') }}">Register</a></p>
