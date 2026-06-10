@@ -9,6 +9,13 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
+Route::get('/language/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'lv'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('language.switch');
+
 Route::get('/', function () {
     $featured = \App\Models\Product::with('category')->latest('id')->take(4)->get();
     return view('welcome', compact('featured'));

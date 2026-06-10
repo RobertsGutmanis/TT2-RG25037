@@ -4,7 +4,7 @@
     <div id="products-page">
 
         <div id="products-topbar">
-            <h1 class="title">Products</h1>
+            <h1 class="title">{{ __('Products') }}</h1>
             <div id="products-topbar-controls">
                 <form method="GET" action="{{ route('products.index') }}" id="products-form">
                     @foreach(request('categories', []) as $cat)
@@ -21,11 +21,11 @@
                     @endif
 
                     <select name="sort" id="sort" onchange="this.form.submit()">
-                        <option value="">Sort</option>
-                        <option value="price-low-high" {{ request('sort') == 'price-low-high' ? 'selected' : '' }}>Price: low to high</option>
-                        <option value="price-high-low" {{ request('sort') == 'price-high-low' ? 'selected' : '' }}>Price: high to low</option>
-                        <option value="name-asc"       {{ request('sort') == 'name-asc'       ? 'selected' : '' }}>Alphabetically</option>
-                        <option value="name-desc"      {{ request('sort') == 'name-desc'      ? 'selected' : '' }}>Reverse alphabetically</option>
+                        <option value="">{{ __('Sort') }}</option>
+                        <option value="price-low-high" {{ request('sort') == 'price-low-high' ? 'selected' : '' }}>{{ __('Price: low to high') }}</option>
+                        <option value="price-high-low" {{ request('sort') == 'price-high-low' ? 'selected' : '' }}>{{ __('Price: high to low') }}</option>
+                        <option value="name-asc"       {{ request('sort') == 'name-asc'       ? 'selected' : '' }}>{{ __('Alphabetically') }}</option>
+                        <option value="name-desc"      {{ request('sort') == 'name-desc'      ? 'selected' : '' }}>{{ __('Reverse alphabetically') }}</option>
                     </select>
                 </form>
 
@@ -46,14 +46,14 @@
                         <input type="hidden" name="sort" value="{{ request('sort') }}">
                     @endif
 
-                    <input type="text" name="nosaukums" placeholder="Search by name" id="search-input" value="{{ request('nosaukums') }}">
-                    <button type="submit">Search</button>
+                    <input type="text" name="nosaukums" placeholder="{{ __('Search by name') }}" id="search-input" value="{{ request('nosaukums') }}">
+                    <button type="submit">{{ __('Search') }}</button>
                 </form>
             </div>
         </div>
 
         @if(request('nosaukums') && $products->isEmpty())
-            <p class="search-error">No products found!</p>
+            <p class="search-error">{{ __('No products found!') }}</p>
         @endif
 
         <div id="products-layout">
@@ -70,7 +70,7 @@
                                 @else
                                     <p class="product-price">{{ number_format($product->price, 2) }}€</p>
                                 @endif
-                                <input type="button" class="product-button" value="Add to cart" id="add-{{ $product->id }}">
+                                <input type="button" class="product-button" value="{{ __('Add to cart') }}" id="add-{{ $product->id }}">
                             </div>
                         </a>
                     @endforeach
@@ -86,11 +86,11 @@
                         <input type="hidden" name="sort" value="{{ request('sort') }}">
                     @endif
 
-                    <p class="filter-panel-title">Filters</p>
+                    <p class="filter-panel-title">{{ __('Filters') }}</p>
 
                     @if($categories->isNotEmpty())
                         <div class="filter-section">
-                            <p class="filter-section-label">Category</p>
+                            <p class="filter-section-label">{{ __('Category') }}</p>
                             @foreach($categories as $cat)
                                 <label class="filter-checkbox-label">
                                     <input type="checkbox" name="categories[]" value="{{ $cat->id }}"
@@ -103,31 +103,31 @@
                     @endif
 
                     <div class="filter-section">
-                        <p class="filter-section-label">Price range</p>
+                        <p class="filter-section-label">{{ __('Price range') }}</p>
                         <div class="filter-price-row">
-                            <input type="number" name="price_min" placeholder="Min" min="0" step="0.01"
+                            <input type="number" name="price_min" placeholder="{{ __('Min') }}" min="0" step="0.01"
                                 value="{{ request('price_min') }}" class="filter-price-input">
                             <span class="filter-price-sep">-</span>
-                            <input type="number" name="price_max" placeholder="Max" min="0" step="0.01"
+                            <input type="number" name="price_max" placeholder="{{ __('Max') }}" min="0" step="0.01"
                                 value="{{ request('price_max') }}" class="filter-price-input">
                         </div>
                     </div>
 
                     <div class="filter-section">
-                        <p class="filter-section-label">Others</p>
+                        <p class="filter-section-label">{{ __('Others') }}</p>
                         <label class="filter-checkbox-label">
                             <input type="checkbox" name="on_sale" value="1"
                                 {{ request('on_sale') ? 'checked' : '' }}
                                 onchange="this.form.submit()">
-                            On sale
+                            {{ __('On sale') }}
                         </label>
                     </div>
 
-                    <button type="submit" class="filter-apply-btn">Apply</button>
+                    <button type="submit" class="filter-apply-btn">{{ __('Apply') }}</button>
 
                     @if(request()->hasAny(['categories', 'price_min', 'price_max', 'on_sale']))
                         <a href="{{ route('products.index', array_filter(['nosaukums' => request('nosaukums'), 'sort' => request('sort')])) }}"
-                           class="filter-clear-link">Clear filters</a>
+                           class="filter-clear-link">{{ __('Clear filters') }}</a>
                     @endif
                 </form>
             </aside>

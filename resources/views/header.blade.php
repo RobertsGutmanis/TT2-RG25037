@@ -19,15 +19,20 @@
     <nav>
         <div id="nav-bar">
             <ul id="nav-links">
-                <li><a class="nav-link" href="{{ route('home') }}">Home</a></li>
+                <li><a class="nav-link" href="{{ route('home') }}">{{ __('Home') }}</a></li>
                 @guest
-                    <li><a class="nav-link" href="{{ route('login') }}">Account</a></li>
+                    <li><a class="nav-link" href="{{ route('login') }}">{{ __('Account') }}</a></li>
                 @endguest
-                <li><a class="nav-link" href="{{ route('products.index') }}">Products</a></li>
-                <li><a class="nav-link" href="{{ route('cart.index') }}">Cart</a></li>
-                <li><a class="nav-link" href="{{ route('wishlist.index') }}">Wishlist</a></li>
+                <li><a class="nav-link" href="{{ route('products.index') }}">{{ __('Products') }}</a></li>
+                <li><a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart') }}</a></li>
+                <li><a class="nav-link" href="{{ route('wishlist.index') }}">{{ __('Wishlist') }}</a></li>
             </ul>
             <div id="nav-right">
+                <div id="lang-switcher">
+                    <a href="{{ route('language.switch', 'en') }}" class="lang-btn {{ app()->getLocale() === 'en' ? 'lang-active' : '' }}">EN</a>
+                    <span class="lang-sep">|</span>
+                    <a href="{{ route('language.switch', 'lv') }}" class="lang-btn {{ app()->getLocale() === 'lv' ? 'lang-active' : '' }}">LV</a>
+                </div>
                 <a id="nav-user" href="{{ route('login') }}">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z" clip-rule="evenodd"/></svg>
                 </a>
@@ -42,3 +47,12 @@
             </div>
         </div>
     </nav>
+    <script>
+        window.trans = {
+            addedToCart: "{{ __('Added to cart!') }}",
+            addedToWishlist: "{{ __('Added to wishlist!') }}",
+            removedFromWishlist: "{{ __('Removed from wishlist!') }}",
+            specKey: "{{ __('Key') }}",
+            specValue: "{{ __('Value') }}"
+        };
+    </script>

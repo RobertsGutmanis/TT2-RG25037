@@ -5,9 +5,9 @@
         <h1 id="hero-headline">Lorem ipsum dolor sit amet.</h1>
         <p id="hero-sub">consectetur adipiscing elit. Donec orci neque, tincidunt et dui quis, convallis facilisis lectus. Nam mi mauris,</p>
         <div id="hero-actions">
-            <a href="{{ route('products.index') }}" class="hero-btn hero-btn-primary">All products</a>
+            <a href="{{ route('products.index') }}" class="hero-btn hero-btn-primary">{{ __('All products') }}</a>
             @guest
-                <a href="{{ route('auth.register') }}" class="hero-btn hero-btn-outline">Create account</a>
+                <a href="{{ route('auth.register') }}" class="hero-btn hero-btn-outline">{{ __('Create account') }}</a>
             @endguest
         </div>
     </div>
@@ -15,8 +15,8 @@
 @if($featured->isNotEmpty())
 <section id="landing-products">
     <div class="landing-section-header">
-        <h2 class="landing-section-title">Latest products</h2>
-        <a href="{{ route('products.index') }}" class="landing-see-all">See all</a>
+        <h2 class="landing-section-title">{{ __('Latest products') }}</h2>
+        <a href="{{ route('products.index') }}" class="landing-see-all">{{ __('See all') }}</a>
     </div>
     <div id="products-container">
         @foreach($featured as $product)
@@ -30,7 +30,7 @@
                     @else
                         <p class="product-price">{{ number_format($product->price, 2) }}€</p>
                     @endif
-                    <input type="button" class="product-button" value="Add to cart" id="add-{{ $product->id }}">
+                    <input type="button" class="product-button" value="{{ __('Add to cart') }}" id="add-{{ $product->id }}">
                 </div>
             </a>
         @endforeach

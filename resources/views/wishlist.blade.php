@@ -2,13 +2,13 @@
 
 <div id="main">
     <br>
-    <h1 class="title">Wishlist</h1>
+    <h1 class="title">{{ __('Wishlist') }}</h1>
     <br>
 
     @if($items->isEmpty())
         <div class="wishlist-empty">
-            <p>Your wishlist is empty.</p>
-            <a href="{{ route('products.index') }}" class="btn btn-primary">Browse products</a>
+            <p>{{ __('Your wishlist is empty.') }}</p>
+            <a href="{{ route('products.index') }}" class="btn btn-primary">{{ __('Browse products') }}</a>
         </div>
     @else
         <div id="products-container">
@@ -35,12 +35,12 @@
                     <div class="wishlist-card-footer">
                         <form method="POST" action="{{ route('cart.add', $product->id) }}">
                             @csrf
-                            <button type="submit" class="product-button" data-alert="Added to cart!">Add to cart</button>
+                            <button type="submit" class="product-button" data-alert="{{ __('Added to cart!') }}">{{ __('Add to cart') }}</button>
                         </form>
                         <form method="POST" action="{{ route('wishlist.toggle', $product->id) }}">
                             @csrf
-                            <button type="submit" class="wishlist-remove-btn" title="Remove from wishlist">
-                                Remove
+                            <button type="submit" class="wishlist-remove-btn" title="{{ __('Remove') }}">
+                                {{ __('Remove') }}
                             </button>
                         </form>
                     </div>

@@ -2,7 +2,7 @@
 
 <div class="auth-page">
   <div class="auth-card">
-    <h1 class="auth-heading">Create your account</h1>
+    <h1 class="auth-heading">{{ __('Create your account') }}</h1>
     <div class="auth-accent"></div>
 
     @if($errors->any())
@@ -17,30 +17,30 @@
       @csrf
       <div class="field-row">
         <div class="field">
-          <label for="name">Name</label>
+          <label for="name">{{ __('Name') }}</label>
           <input type="text" name="name" id="name" placeholder="John" value="{{ old('name') }}">
         </div>
         <div class="field">
-          <label for="last_name">Last name</label>
+          <label for="last_name">{{ __('Last name') }}</label>
           <input type="text" name="last_name" id="last_name" placeholder="Doe" value="{{ old('last_name') }}">
         </div>
       </div>
       <div class="field">
-        <label for="email">E-mail</label>
+        <label for="email">{{ __('E-mail') }}</label>
         <input  name="email" id="email" placeholder="you@example.com" value="{{ old('email') }}" >
       </div>
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password">{{ __('Password') }}</label>
         <input type="password" name="password" id="password" placeholder="••••••••" >
       </div>
       <div class="field">
-        <label for="password_confirmation">Confirm Password</label>
+        <label for="password_confirmation">{{ __('Confirm Password') }}</label>
         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="••••••••" >
       </div>
-      <button type="submit" class="auth-btn">Register</button>
+      <button type="submit" class="auth-btn">{{ __('Register') }}</button>
     </form>
 
-    <p class="auth-link">Already registered? <a href="{{ route('login') }}">Login</a></p>
+    <p class="auth-link">{{ __('Already registered?') }} <a href="{{ route('login') }}">{{ __('Login') }}</a></p>
   </div>
 </div>
 

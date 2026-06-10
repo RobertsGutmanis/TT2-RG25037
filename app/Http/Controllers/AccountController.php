@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuditLog;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,7 @@ class AccountController extends Controller
             $request->only(['name', 'last_name', 'phone_num', 'phone_code', 'country', 'address', 'city', 'zip'])
         );
 
+        AuditLog::log('profile_update', []);
         return back()->with('success', 'Profile updated!');
     }
 }

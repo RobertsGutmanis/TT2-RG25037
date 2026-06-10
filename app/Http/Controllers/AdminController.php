@@ -17,8 +17,40 @@ class AdminController extends Controller
         $products   = Product::with(['category', 'specifications'])->get();
         $categories = Category::all();
         $orders     = Order::with(['user.userData', 'items'])->orderByDesc('id')->get();
+        $allLogs    = $this->readAuditLogs();
+        $logPage    = max(1, (int) request('log_page', 1));
+        $logPerPage = 5;
+        $logTotal   = count($allLogs);
+        $logPages   = max(1, (int) ceil($logTotal / $logPerPage));
+        $logPage    = min($logPage, $logPages);
+        $logs       = array_slice($allLogs, ($logPage - 1) * $logPerPage, $logPerPage);
 
-        return view('admin', compact('products', 'categories', 'orders'));
+        return view('admin', compact('products', 'categories', 'orders', 'logs', 'logPage', 'logPages', 'logTotal'));
+    }
+
+    private function readAuditLogs(): array
+    {
+        $path = storage_path('logs/audit.log');
+        if (!file_exists($path)) {
+            return [];
+        }
+
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $logs  = [];
+
+        foreach (array_reverse($lines) as $line) {
+            if (preg_match('/\{.*\}/', $line, $m)) {
+                $entry = json_decode($m[0], true);
+                if ($entry) {
+                    $logs[] = $entry;
+                }
+            }
+            if (count($logs) >= 300) {
+                break;
+            }
+        }
+
+        return $logs;
     }
 
     public function updateOrderStatus(Request $request, $id)

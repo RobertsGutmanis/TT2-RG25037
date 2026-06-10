@@ -10,15 +10,15 @@
         </div>
          <form method="POST" action="{{ route('auth.logout') }}">
             @role('admin')
-            <a href="{{ route("admin.index") }}" class="save-btn a-btn">Admin panel</a>
+            <a href="{{ route("admin.index") }}" class="save-btn a-btn">{{ __('Admin panel') }}</a>
             @endrole
             @csrf
-            <button type="submit" class="save-btn">Log out</button>
+            <button type="submit" class="save-btn">{{ __('Log out') }}</button>
         </form>
     </div>
 
     <div class="section">
-        <p class="section-title">Profile Info</p>
+        <p class="section-title">{{ __('Profile Info') }}</p>
         <div class="card">
             @if(session('success'))
                 <p class="success-msg">{{ session('success') }}</p>
@@ -31,55 +31,55 @@
                 @csrf
                 <div class="field-row">
                     <div class="field">
-                        <label>Name</label>
+                        <label>{{ __('Name') }}</label>
                         <input type="text" name="name" value="{{ $user->userData->name}}" required maxlength="16">
                     </div>
                     <div class="field">
-                        <label>Last name</label>
+                        <label>{{ __('Last name') }}</label>
                         <input type="text" name="last_name" value="{{ $user->userData->last_name}}" required maxlength="16">
                     </div>
                 </div>
                 <div class="field">
-                    <label>E-mail</label>
+                    <label>{{ __('E-mail') }}</label>
                     <input type="email" name="email" value="{{ $user->email }}" required maxlength="255">
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label>Phone code</label>
+                        <label>{{ __('Phone code') }}</label>
                         <input type="text" name="phone_code" value="{{ $user->userData->phone_code }}" placeholder="+371">
                     </div>
                     <div class="field">
-                        <label>Phone number</label>
+                        <label>{{ __('Phone number') }}</label>
                         <input type="text" name="phone_num" value="{{ $user->userData->phone_num }}" placeholder="29000000">
                     </div>
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label>Country</label>
+                        <label>{{ __('Country') }}</label>
                         <input type="text" name="country" value="{{ $user->userData->country }}" maxlength="32">
                     </div>
                     <div class="field">
-                        <label>City</label>
+                        <label>{{ __('City') }}</label>
                         <input type="text" name="city" value="{{ $user->userData->city }}" maxlength="16">
                     </div>
                 </div>
                 <div class="field-row">
                     <div class="field">
-                        <label>Address</label>
+                        <label>{{ __('Address') }}</label>
                         <input type="text" name="address" value="{{ $user->userData->address }}" maxlength="64">
                     </div>
                     <div class="field">
-                        <label>Post index</label>
+                        <label>{{ __('Post index') }}</label>
                         <input type="text" name="zip" value="{{ $user->userData->zip }}" maxlength="7">
                     </div>
                 </div>
-                <button type="submit" class="save-btn">Save</button>
+                <button type="submit" class="save-btn">{{ __('Save') }}</button>
             </form>
         </div>
     </div>
 
     <div class="section">
-        <p class="section-title">Order History</p>
+        <p class="section-title">{{ __('Order History') }}</p>
         <div class="card">
             @forelse($orders as $order)
                 <div class="order-row">
@@ -89,7 +89,7 @@
                     </div>
                     <div class="order-right">
                         <p class="order-price">€{{ number_format($order->total, 2) }}</p>
-                        <span class="badge badge-{{ $order->status }}">{{ ucfirst($order->status) }}</span>
+                        <span class="badge badge-{{ $order->status }}">{{ ucfirst(__($order->status)) }}</span>
                     </div>
                 </div>
                 @if($order->items->isNotEmpty())
@@ -99,7 +99,7 @@
                                 @if($item->product && $item->product->image_url)
                                     <img class="order-item-img" src="{{ $item->product->image_url }}" alt="{{ $item->product->name }}">
                                 @endif
-                                <span class="order-item-name">{{ $item->product->name ?? 'Product removed' }}</span>
+                                <span class="order-item-name">{{ $item->product->name ?? __('Product removed') }}</span>
                                 <span class="order-item-qty">x{{ $item->quantity }}</span>
                                 <span class="order-item-price">€{{ number_format($item->price * $item->quantity, 2) }}</span>
                             </div>
@@ -107,7 +107,7 @@
                     </div>
                 @endif
             @empty
-                <p class="no-orders">No orders yet.</p>
+                <p class="no-orders">{{ __('No orders yet.') }}</p>
             @endforelse
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AuditLog;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class CheckoutController extends Controller
             ]);
         }
 
+        AuditLog::log('checkout', ['order_id' => $order->id, 'total' => number_format($total, 2), 'items' => count($cart)]);
         session()->forget('cart');
 
         return redirect()->route('account.index')->with('success', 'Order placed successfully!');

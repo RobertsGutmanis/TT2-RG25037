@@ -52,9 +52,8 @@ return [
 
     'channels' => [
         'audit' => [
-            'driver' => 'daily',
+            'driver' => 'single',
             'path'   => storage_path('logs/audit.log'),
-            'days'   => 30,
         ],
 
         'stack' => [
