@@ -65,8 +65,10 @@
                             <h2 class="product-title">{{ $product->name }}</h2>
                             <div class="product-footer">
                                 @if($product->price < $product->last_price)
-                                    <p class="product-price product-price-discount">{{ number_format($product->price, 2) }}€</p>
-                                    <p class="product-price-old">{{ number_format($product->last_price, 2) }}€</p>
+                                    <div class="product-price-group">
+                                        <p class="product-price product-price-discount">{{ number_format($product->price, 2) }}€</p>
+                                        <p class="product-price-old">{{ number_format($product->last_price, 2) }}€</p>
+                                    </div>
                                 @else
                                     <p class="product-price">{{ number_format($product->price, 2) }}€</p>
                                 @endif
@@ -111,8 +113,8 @@
                             <input type="number" name="price_max" placeholder="{{ __('Max') }}" min="0" step="0.01"
                                 value="{{ request('price_max') }}" class="filter-price-input">
                         </div>
+                        <button type="submit" class="filter-apply-btn">{{ __('Apply') }}</button>
                     </div>
-
                     <div class="filter-section">
                         <p class="filter-section-label">{{ __('Others') }}</p>
                         <label class="filter-checkbox-label">
@@ -122,13 +124,6 @@
                             {{ __('On sale') }}
                         </label>
                     </div>
-
-                    <button type="submit" class="filter-apply-btn">{{ __('Apply') }}</button>
-
-                    @if(request()->hasAny(['categories', 'price_min', 'price_max', 'on_sale']))
-                        <a href="{{ route('products.index', array_filter(['nosaukums' => request('nosaukums'), 'sort' => request('sort')])) }}"
-                           class="filter-clear-link">{{ __('Clear filters') }}</a>
-                    @endif
                 </form>
             </aside>
         </div>

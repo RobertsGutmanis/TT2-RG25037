@@ -25,8 +25,10 @@
                 <h2 class="product-title">{{ $product->name }}</h2>
                 <div class="product-footer">
                     @if($product->price < $product->last_price)
-                        <p class="product-price product-price-discount">{{ number_format($product->price, 2) }}€</p>
-                        <p class="product-price-old">{{ number_format($product->last_price, 2) }}€</p>
+                        <div class="product-price-group">
+                            <p class="product-price product-price-discount">{{ number_format($product->price, 2) }}€</p>
+                            <p class="product-price-old">{{ number_format($product->last_price, 2) }}€</p>
+                        </div>
                     @else
                         <p class="product-price">{{ number_format($product->price, 2) }}€</p>
                     @endif

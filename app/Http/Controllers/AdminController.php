@@ -73,15 +73,14 @@ class AdminController extends Controller
             'manufacturer' => 'required|string|max:64',
             'description'  => 'required|string|max:32',
             'price'        => 'required|numeric',
-            'last_price'   => 'required|numeric',
             'image_url'    => 'required|string',
             'category_id'  => 'required|exists:categories,id',
         ]);
 
-        $product = Product::create($request->only([
-            'name', 'manufacturer', 'description',
-            'price', 'last_price', 'image_url', 'category_id'
-        ]));
+        $product = Product::create(array_merge(
+            $request->only(['name', 'manufacturer', 'description', 'price', 'image_url', 'category_id']),
+            ['last_price' => $request->price]
+        ));
 
         if ($request->has('specs')) {
             foreach ($request->specs as $spec) {
