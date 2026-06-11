@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 class CheckoutController extends Controller
 {
@@ -32,6 +34,50 @@ class CheckoutController extends Controller
                 ->with('error', 'Please complete your profile (phone number, country, address, city, and post index) before placing an order.');
         }
 
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $lineItems = [];
+        foreach ($cart as $item) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency'     => 'eur',
+                    'product_data' => ['name' => $item['name']],
+                    'unit_amount'  => (int) round($item['price'] * 100),
+                ],
+                'quantity' => $item['quantity'],
+            ];
+        }
+
+        $session = StripeSession::create([
+            'payment_method_types' => ['card'],
+            'line_items'           => $lineItems,
+            'mode'                 => 'payment',
+            'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'           => route('cart.index'),
+        ]);
+
+        session(['pending_stripe_session' => $session->id]);
+
+        return redirect($session->url);
+    }
+
+    public function success(Request $request)
+    {
+        $sessionId = $request->query('session_id');
+
+        if (!$sessionId || session('pending_stripe_session') !== $sessionId) {
+            return redirect()->route('cart.index');
+        }
+
+        Stripe::setApiKey(config('services.stripe.secret'));
+        $stripeSession = StripeSession::retrieve($sessionId);
+
+        if ($stripeSession->payment_status !== 'paid') {
+            return redirect()->route('cart.index')
+                ->with('error', 'Payment was not completed.');
+        }
+
+        $cart  = session('cart', []);
         $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
 
         $order = Order::create([
@@ -55,7 +101,7 @@ class CheckoutController extends Controller
         }
 
         AuditLog::log('checkout', ['order_id' => $order->id, 'total' => number_format($total, 2), 'items' => count($cart)]);
-        session()->forget('cart');
+        session()->forget(['cart', 'pending_stripe_session']);
 
         return redirect()->route('account.index')->with('success', 'Order placed successfully!');
     }
