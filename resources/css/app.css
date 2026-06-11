@@ -1889,7 +1889,7 @@ tr:last-child td {
 
   #landing-products #products-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     width: 100%;
     gap: 12px;
     padding: 0;
