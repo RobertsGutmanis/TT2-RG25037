@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -44,10 +43,7 @@ class ApiProductController extends Controller
         [$column, $direction] = $sortOptions[$request->input('sort')] ?? ['id', 'desc'];
         $query->orderBy($column, $direction);
 
-        return response()->json([
-            'products' => $query->get(),
-            'categories' => Category::orderBy('category')->get(),
-        ]);
+        return response()->json($query->get());
     }
 
     // GET /api/products/{id}
