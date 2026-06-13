@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +16,7 @@ class ProductController extends Controller
         $isWishlisted = Auth::check()
             ? Wishlist::where('user_id', Auth::id())->where('product_id', $id)->exists()
             : false;
+
         return view('product-detail', compact('product', 'isWishlisted'));
     }
 
@@ -24,7 +25,7 @@ class ProductController extends Controller
         $query = Product::with('category');
 
         if ($request->filled('nosaukums')) {
-            $query->where('name', 'like', '%' . $request->input('nosaukums') . '%');
+            $query->where('name', 'like', '%'.$request->input('nosaukums').'%');
         }
 
         if ($request->filled('categories')) {
@@ -58,9 +59,9 @@ class ProductController extends Controller
                 break;
         }
 
-        $products   = $query->get();
+        $products = $query->get();
         $categories = Category::orderBy('category')->get();
-        $maxPrice   = Product::max('price') ?? 1000;
+        $maxPrice = Product::max('price') ?? 1000;
 
         return view('products', compact('products', 'categories', 'maxPrice'));
     }

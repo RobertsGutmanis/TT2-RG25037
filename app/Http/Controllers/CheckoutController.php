@@ -7,8 +7,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
+use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
@@ -21,15 +21,10 @@ class CheckoutController extends Controller
         }
 
         $userData = Auth::user()->userData;
-        $missing = !$userData
-            || !$userData->phone_num
-            || !$userData->phone_code
-            || !$userData->country
-            || !$userData->address
-            || !$userData->city
-            || !$userData->zip;
 
-        if ($missing) {
+        if (! $userData || ! $userData->phone_num || ! $userData->phone_code
+            || ! $userData->country || ! $userData->address
+            || ! $userData->city || ! $userData->zip) {
             return redirect()->route('account.index')
                 ->with('error', 'Please complete your profile (phone number, country, address, city, and post index) before placing an order.');
         }
@@ -40,9 +35,9 @@ class CheckoutController extends Controller
         foreach ($cart as $item) {
             $lineItems[] = [
                 'price_data' => [
-                    'currency'     => 'eur',
+                    'currency' => 'eur',
                     'product_data' => ['name' => $item['name']],
-                    'unit_amount'  => (int) round($item['price'] * 100),
+                    'unit_amount' => (int) round($item['price'] * 100),
                 ],
                 'quantity' => $item['quantity'],
             ];
@@ -50,10 +45,10 @@ class CheckoutController extends Controller
 
         $session = StripeSession::create([
             'payment_method_types' => ['card'],
-            'line_items'           => $lineItems,
-            'mode'                 => 'payment',
-            'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url'           => route('cart.index'),
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('cart.index'),
         ]);
 
         session(['pending_stripe_session' => $session->id]);
@@ -65,7 +60,7 @@ class CheckoutController extends Controller
     {
         $sessionId = $request->query('session_id');
 
-        if (!$sessionId || session('pending_stripe_session') !== $sessionId) {
+        if (! $sessionId || session('pending_stripe_session') !== $sessionId) {
             return redirect()->route('cart.index');
         }
 
@@ -73,30 +68,33 @@ class CheckoutController extends Controller
         $stripeSession = StripeSession::retrieve($sessionId);
 
         if ($stripeSession->payment_status !== 'paid') {
-            return redirect()->route('cart.index')
-                ->with('error', 'Payment was not completed.');
+            return redirect()->route('cart.index')->with('error', 'Payment was not completed.');
         }
 
-        $cart  = session('cart', []);
-        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $cart = session('cart', []);
+        $total = 0;
+
+        foreach ($cart as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
 
         $order = Order::create([
-            'user_id'         => Auth::id(),
+            'user_id' => Auth::id(),
             'tracking_number' => random_int(10000000, 99999999),
-            'created_at'      => now()->toDateString(),
-            'delivered_at'    => null,
-            'sum'             => (int) round($total * 100),
-            'total'           => $total,
+            'created_at' => now()->toDateString(),
+            'delivered_at' => null,
+            'sum' => (int) round($total * 100),
+            'total' => $total,
             'delivery_method' => 'standard',
-            'status'          => 'pending',
+            'status' => 'pending',
         ]);
 
         foreach ($cart as $item) {
             OrderItem::create([
-                'order_id'   => $order->id,
+                'order_id' => $order->id,
                 'product_id' => $item['id'],
-                'quantity'   => $item['quantity'],
-                'price'      => $item['price'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
             ]);
         }
 

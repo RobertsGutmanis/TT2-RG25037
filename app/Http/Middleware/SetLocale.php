@@ -18,6 +18,7 @@ class SetLocale
         }
 
         App::setLocale(in_array($locale, ['en', 'lv']) ? $locale : 'en');
+
         return $next($request);
     }
 }

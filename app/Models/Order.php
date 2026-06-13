@@ -20,9 +20,9 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'created_at'  => 'date',
+        'created_at' => 'date',
         'delivered_at' => 'date',
-        'total'        => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
     public function items()

@@ -16,11 +16,12 @@ class Product extends Model
         'image_url',
         'category_id',
     ];
+
     public $timestamps = false;
 
     protected $casts = [
-        'price'        => 'double',
-        'last_price'   => 'double',
+        'price' => 'double',
+        'last_price' => 'double',
         'price_change' => 'date',
     ];
 
@@ -29,8 +30,9 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
     public function specifications()
     {
-        return $this->hasMany(\App\Models\ProductSpecification::class);
+        return $this->hasMany(ProductSpecification::class);
     }
 }

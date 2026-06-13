@@ -41,7 +41,7 @@
                     ];
                     $key = $actionKeys[$log['action']] ?? null;
                     $label = $key ? __($key) : ucfirst(str_replace('_', ' ', $log['action']));
-                    $details = collect($log['details'] ?? [])->map(fn($v,$k) => "$k: $v")->implode(', ');
+                    $details = collect($log['details'] ?? [])->map(fn($value, $key) => "$key: $value")->implode(', ');
                     $isError = str_contains($log['action'], 'failed');
                 @endphp
                 <tr>
@@ -116,8 +116,8 @@
                         <form method="POST" action="{{ route('admin.order.status', $order->id) }}" style="display:flex;gap:6px;align-items:center;">
                             @csrf
                             <select name="status" class="admin-status-select">
-                                @foreach(['pending','processing','delivered','cancelled'] as $s)
-                                    <option value="{{ $s }}" @selected($order->status === $s)>{{ ucfirst(__($s)) }}</option>
+                                @foreach(['pending','processing','delivered','cancelled'] as $status)
+                                    <option value="{{ $status }}" @selected($order->status === $status)>{{ ucfirst(__($status)) }}</option>
                                 @endforeach
                             </select>
                             <button type="submit" class="btn btn-primary" style="padding:4px 10px;font-size:12px;">{{ __('Save') }}</button>

@@ -58,7 +58,7 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'charset'   => 'utf8mb4',
+            'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([

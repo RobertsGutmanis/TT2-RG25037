@@ -11,12 +11,12 @@ class AuditLog
         $user = auth()->user();
 
         $entry = [
-            'time'    => now()->toDateTimeString(),
+            'time' => now()->toDateTimeString(),
             'user_id' => $user?->id ?? 'guest',
-            'email'   => $user?->email ?? 'guest',
-            'action'  => $action,
-            'ip'      => request()->ip(),
-            'url'     => request()->fullUrl(),
+            'email' => $user?->email ?? 'guest',
+            'action' => $action,
+            'ip' => request()->ip(),
+            'url' => request()->fullUrl(),
             'details' => $details,
         ];
 

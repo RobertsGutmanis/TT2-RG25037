@@ -11,7 +11,8 @@ class CartController extends Controller
     public function index()
     {
         $cart = session('cart', []);
-        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+        $total = collect($cart)->sum(fn ($item) => $item['price'] * $item['quantity']);
+
         return view('cart', compact('cart', 'total'));
     }
 
@@ -24,16 +25,17 @@ class CartController extends Controller
             $cart[$id]['quantity']++;
         } else {
             $cart[$id] = [
-                'id'        => $product->id,
-                'name'      => $product->name,
-                'price'     => $product->price,
+                'id' => $product->id,
+                'name' => $product->name,
+                'price' => $product->price,
                 'image_url' => $product->image_url,
-                'quantity'  => 1,
+                'quantity' => 1,
             ];
         }
 
         AuditLog::log('cart_add', ['product_id' => $id, 'product' => $product->name]);
         session(['cart' => $cart]);
+
         return redirect()->back();
     }
 
@@ -44,25 +46,27 @@ class CartController extends Controller
         unset($cart[$id]);
         AuditLog::log('cart_remove', ['product_id' => $id, 'product' => $name]);
         session(['cart' => $cart]);
+
         return redirect()->route('cart.index');
     }
 
     public function update(Request $request, $id)
     {
         $cart = session('cart', []);
-        $qty = (int) $request->input('quantity', 1);
+        $quantity = (int) $request->input('quantity', 1);
 
         if (isset($cart[$id])) {
-            if ($qty < 1) {
+            if ($quantity < 1) {
                 AuditLog::log('cart_remove', ['product_id' => $id, 'product' => $cart[$id]['name']]);
                 unset($cart[$id]);
             } else {
-                $cart[$id]['quantity'] = $qty;
-                AuditLog::log('cart_update', ['product_id' => $id, 'product' => $cart[$id]['name'], 'quantity' => $qty]);
+                $cart[$id]['quantity'] = $quantity;
+                AuditLog::log('cart_update', ['product_id' => $id, 'product' => $cart[$id]['name'], 'quantity' => $quantity]);
             }
         }
 
         session(['cart' => $cart]);
+
         return redirect()->route('cart.index');
     }
 
@@ -70,6 +74,7 @@ class CartController extends Controller
     {
         AuditLog::log('cart_clear', []);
         session()->forget('cart');
+
         return redirect()->route('cart.index');
     }
 }

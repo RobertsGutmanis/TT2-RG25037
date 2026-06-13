@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('created_at');
             $table->date('delivered_at');
             $table->integer('sum');
-            $table->string('delivery_method',32);
+            $table->string('delivery_method', 32);
             $table->foreignId('user_id')->constrained('users');
         });
     }

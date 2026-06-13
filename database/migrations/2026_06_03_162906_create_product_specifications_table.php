@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('product_specifications', function (Blueprint $table) {
             $table->id();
-            $table->string('key',16);
-            $table->string('value',64);
+            $table->string('key', 16);
+            $table->string('value', 64);
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
         });
     }

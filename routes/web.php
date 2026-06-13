@@ -1,25 +1,28 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProductController; 
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WishlistController;
+use App\Models\Product;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/language/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'lv'])) {
         session(['locale' => $locale]);
     }
+
     return redirect()->back();
 })->name('language.switch');
 
 Route::get('/', function () {
-    $featured = \App\Models\Product::with('category')->latest('id')->take(4)->get();
+    $featured = Product::with('category')->latest('id')->take(4)->get();
+
     return view('welcome', compact('featured'));
-})->name("home");
+})->name('home');
 
 Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
 Route::get('/register', [AuthController::class, 'registerPage'])->name('auth.register');
@@ -44,7 +47,6 @@ Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin-panel', [AdminController::class, 'index'])->name('admin.index');
